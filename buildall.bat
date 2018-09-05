@@ -28,12 +28,12 @@ if defined option (
   goto :eof
 )
 
-set dest_dir=%HOME%\klayout-bits-installed
+set dest_dir=%HOMEPATH%\klayout-bits-installed
 if defined option-t (
   set dest_dir=%option-t%
-  echo Using for target directory: %option-t%
-  echo.
 )
+echo Using for target directory: %dest_dir%
+echo.
 
 if not defined option-32 (
   if not defined option-64 (

@@ -19,10 +19,10 @@ cd ..
 
 mkdir %instdir%\libraries
 mkdir %instdir%\bin
-mkdir %instdir%\include
+mkdir %instdir%\include\curl
 
 xcopy builds\libcurl-vc-%CURL_BUILD_PLATFORM%-release-dll-ipv6-sspi-winssl\bin\* %instdir%\bin
 xcopy builds\libcurl-vc-%CURL_BUILD_PLATFORM%-release-dll-ipv6-sspi-winssl-obj-lib\*.lib %instdir%\libraries
-xcopy include\curl\*.h %instdir%\include
+xcopy include\curl\*.h %instdir%\include\curl
 
 endlocal
