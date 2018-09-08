@@ -1,6 +1,6 @@
 
 PYTHONINCLUDE = $$BITS_PATH/python/include
-debug {
+CONFIG(debug, debug|release) {
   PYTHONLIBFILE = $$BITS_PATH/python/libraries/python36_d.lib
   PYTHON = $$shell_path($$BITS_PATH/python/bin/python_d.exe)
   PYTHONEXTSUFFIX = _d.pyd
