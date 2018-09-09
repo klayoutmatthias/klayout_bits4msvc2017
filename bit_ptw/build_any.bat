@@ -21,8 +21,6 @@ mkdir %instdir%\include
 xcopy pthread*.lib %instdir%\libraries
 xcopy pthread*.dll %instdir%\bin
 xcopy pthread*.pdb %instdir%\bin
-xcopy pthread.h %instdir%\include
-xcopy config.h %instdir%\include
-xcopy need_errno.h %instdir%\include
+xcopy *.h %instdir%\include
 
 endlocal
