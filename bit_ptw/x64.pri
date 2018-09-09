@@ -1,3 +1,3 @@
 
-INCLUDEPATH += $$BITS_PATH/zlib/include
-LIBS += $$BITS_PATH/zlib/libraries/zlib.lib
+INCLUDEPATH += $$BITS_PATH/ptw/include
+LIBS += $$BITS_PATH/ptw/libraries/pthreadVCE2.lib
