@@ -1,0 +1,124 @@
+diff --git a/Makefile b/Makefile
+index 472969c..ada6181 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,7 +1,7 @@
+ # This makefile is compatible with MS nmake and can be used as a
+ # replacement for buildlib.bat. I've changed the target from an ordinary dll
+ # (/LD) to a debugging dll (/LDd).
+-# 
++#
+ # The variables $DLLDEST and $LIBDEST hold the destination directories for the
+ # dll and the lib, respectively. Probably all that needs to change is $DEVROOT.
+ 
+@@ -26,7 +26,7 @@ STATIC_STAMPS	= pthreadVCE$(DLL_VER).static pthreadVSE$(DLL_VER).static pthreadV
+ 
+ CC	= cl
+ CPPFLAGS = /I. /DHAVE_PTW32_CONFIG_H
+-XCFLAGS = /W3 /MD /nologo
++XCFLAGS = /W3 /MD /nologo /D_TIMESPEC_DEFINED
+ CFLAGS	= /O2 /Ob2 $(XCFLAGS)
+ CFLAGSD	= /Z7 $(XCFLAGS)
+ 
+@@ -243,7 +243,7 @@ CANCEL_SRCS	= \
+ 		pthread_setcancelstate.c \
+ 		pthread_setcanceltype.c \
+ 		pthread_testcancel.c \
+-		pthread_cancel.c 
++		pthread_cancel.c
+ 
+ CONDVAR_SRCS	= \
+ 		ptw32_cond_check_need_init.c \
+@@ -299,7 +299,7 @@ NONPORTABLE_SRCS = \
+ 		pthread_delay_np.c \
+ 		pthread_num_processors_np.c \
+ 		pthread_win32_attach_detach_np.c \
+-		pthread_timechange_handler_np.c 
++		pthread_timechange_handler_np.c
+ 
+ PRIVATE_SRCS	= \
+ 		ptw32_is_attr.c \
+diff --git a/Nmakefile b/Nmakefile
+index d9e5bf1..119f835 100644
+--- a/Nmakefile
++++ b/Nmakefile
+@@ -21,4 +21,3 @@ pthread $(VERSION) :LIBRARY: attr.c barrier.c cancel.c cleanup.c condvar.c \
+ 	TODO WinCE-PORT install-sh errno.c tests tests.mk acconfig.h \
+ 	config.guess config.h.in config.sub configure configure.in signal.c \
+ 	README.CV README.NONPORTABLE pthread.dsp pthread.dsw
+-
+diff --git a/implement.h b/implement.h
+index 693be26..88e38eb 100644
+--- a/implement.h
++++ b/implement.h
+@@ -10,25 +10,25 @@
+  *      Pthreads-win32 - POSIX Threads Library for Win32
+  *      Copyright(C) 1998 John E. Bossom
+  *      Copyright(C) 1999,2005 Pthreads-win32 contributors
+- * 
++ *
+  *      Contact Email: Ross.Johnson@homemail.com.au
+- * 
++ *
+  *      The current list of contributors is contained
+  *      in the file CONTRIBUTORS included with the source
+  *      code distribution. The list can also be seen at the
+  *      following World Wide Web location:
+  *      http://sources.redhat.com/pthreads-win32/contributors.html
+- * 
++ *
+  *      This library is free software; you can redistribute it and/or
+  *      modify it under the terms of the GNU Lesser General Public
+  *      License as published by the Free Software Foundation; either
+  *      version 2 of the License, or (at your option) any later version.
+- * 
++ *
+  *      This library is distributed in the hope that it will be useful,
+  *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+  *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  *      Lesser General Public License for more details.
+- * 
++ *
+  *      You should have received a copy of the GNU Lesser General Public
+  *      License along with this library in the file COPYING.LIB;
+  *      if not, write to the Free Software Foundation, Inc.,
+@@ -97,7 +97,11 @@ typedef VOID (APIENTRY *PAPCFUNC)(DWORD dwParam);
+ #define PTW32_INTERLOCKED_SIZE size_t
+ #define PTW32_INTERLOCKED_PVOID PVOID
+ #define PTW32_INTERLOCKED_LONGPTR PTW32_INTERLOCKED_VOLATILE long*
+-#define PTW32_INTERLOCKED_SIZEPTR PTW32_INTERLOCKED_VOLATILE size_t*
++#if defined(_WIN64)
++#  define PTW32_INTERLOCKED_SIZEPTR PTW32_INTERLOCKED_VOLATILE __int64*
++#else
++#  define PTW32_INTERLOCKED_SIZEPTR PTW32_INTERLOCKED_VOLATILE size_t*
++#endif
+ #define PTW32_INTERLOCKED_PVOID_PTR PTW32_INTERLOCKED_VOLATILE PVOID*
+ 
+ #if defined(__MINGW64__) || defined(__MINGW32__)
+@@ -178,7 +182,7 @@ struct ptw32_thread_t_
+ };
+ 
+ 
+-/* 
++/*
+  * Special value to mark attribute objects as valid.
+  */
+ #define PTW32_ATTR_VALID ((unsigned long) 0xC4C0FFEE)
+@@ -469,7 +473,7 @@ struct ThreadKeyAssoc
+    *              The pthread_key_t->threads attribute is the head of
+    *              a chain of associations that runs through the
+    *              nextThreads link. This chain provides the 1 to many
+-   *              relationship between a pthread_key_t and all the 
++   *              relationship between a pthread_key_t and all the
+    *              PThreads that have called pthread_setspecific for
+    *              this pthread_key_t.
+    *
+@@ -917,7 +921,7 @@ extern "C"
+ 
+ #if defined(NEED_CREATETHREAD)
+ 
+-/* 
++/*
+  * Macro uses args so we can cast start_proc to LPTHREAD_START_ROUTINE
+  * in order to avoid warnings because of return type
+  */

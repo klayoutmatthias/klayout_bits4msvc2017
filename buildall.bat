@@ -22,8 +22,8 @@ if defined option (
   echo.
   echo Options:
   echo   -t {target-dir}    Specify the target directory where to install the bits
-  echo   -32                Builds 32bit. Default: all
-  echo   -64                Builds 64bit. Default: all
+  echo   -p 32              Builds 32bit. Default: all
+  echo   -p 64              Builds 64bit. Default: all
   echo.
   goto :eof
 )
@@ -35,11 +35,16 @@ if defined option-t (
 echo Using for target directory: %dest_dir%
 echo.
 
-if not defined option-32 (
-  if not defined option-64 (
+if defined option-p (
+  if "%option-p%" == "32" (
     set option-32=1
+  )
+  if "%option-p%" == "64" (
     set option-64=1
   )
+) else (
+  set option-32=1
+  set option-64=1
 )
 
 rem ----------------------------------------------------------
