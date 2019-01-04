@@ -31,6 +31,10 @@ jobs:
     maxParallel: 2
   steps:
   - template: azure/buildtemplate.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-$(build.set)bits-$(arch)'
+      targetPath: 'klayout-bits-installed'
 
 - job: aggregate_micro
   displayName: 'Aggregate KLayout microbits'
@@ -41,9 +45,18 @@ jobs:
   - checkout: none
   - task: DownloadPipelineArtifact@0
     inputs:
+      artifactName: 'klayout-microbits-32'
+      targetPath: $(System.DefaultWorkingDirectory)
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-microbits-64'
       targetPath: $(System.DefaultWorkingDirectory)
   - bash: |
       find .
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-microbits'
+      targetPath: '$(System.DefaultWorkingDirectory)'
 
 - job: aggregate_all
   displayName: 'Aggregate KLayout bits'
@@ -54,6 +67,15 @@ jobs:
   - checkout: none
   - task: DownloadPipelineArtifact@0
     inputs:
+      artifactName: 'klayout-allbits-32'
+      targetPath: $(System.DefaultWorkingDirectory)
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-allbits-64'
       targetPath: $(System.DefaultWorkingDirectory)
   - bash: |
       find .
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-bits'
+      targetPath: '$(System.DefaultWorkingDirectory)'

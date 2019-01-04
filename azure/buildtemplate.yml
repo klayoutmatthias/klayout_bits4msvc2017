@@ -12,9 +12,3 @@ steps:
     echo BUILD_SET=%BUILD_SET%
     buildall.bat -p %ARCH% -only %BUILD_SET% -t %cd%\klayout-bits-installed
   displayName: 'Build klayout-$(build.set)bits-$(arch)'
-- bash: |
-    find .
-- task: PublishPipelineArtifact@0
-  inputs:
-    artifactName: 'klayout-$(build.set)bits-$(arch)'
-    targetPath: 'klayout-bits-installed'
