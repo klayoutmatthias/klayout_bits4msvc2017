@@ -1,0 +1,20 @@
+steps:
+- script: |
+    choco install msys2 --params="/InstallDir:%CD:~0,2%\msys64 /NoUpdate"
+  displayName: 'Install msys2'
+- script: |
+    set PATH=%CD:~0,2%\msys64\usr\bin;%PATH%
+    %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -S bison flex
+  displayName: 'Install bison and flex'
+- script: |
+    set PATH=%CD:~0,2%\msys64\usr\bin;%PATH%
+    echo ARCH=%ARCH%
+    echo BUILD_SET=%BUILD_SET%
+    buildall.bat -p %ARCH% -only %BUILD_SET% -t %cd%\klayout-bits-installed
+  displayName: 'Build klayout-$(build.set)bits-$(arch)'
+- bash: |
+    find .
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: 'klayout-$(build.set)bits-$(arch)'
+    targetPath: 'klayout-bits-installed'

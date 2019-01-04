@@ -1,6 +1,22 @@
 # https://aka.ms/yaml
 jobs:
-- job: Build
+- job: build_all
+  pool:
+    vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
+  timeoutInMinutes: 120
+  strategy:
+    matrix:
+      x86-bits:
+        arch: '32'
+        build.set: 'all'
+      x64-bits:
+        arch: '64'
+        build.set: 'all'
+    maxParallel: 2
+  steps:
+  - template: azure/buildtemplate.yml
+
+- job: build_micro
   pool:
     vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
   timeoutInMinutes: 120
@@ -12,36 +28,26 @@ jobs:
       x64-microbits:
         arch: '64'
         build.set: 'micro'
-      x86-bits:
-        arch: '32'
-        build.set: 'all'
-      x64-bits:
-        arch: '64'
-        build.set: 'all'
-    maxParallel: 4
+    maxParallel: 2
   steps:
-  - script: |
-      choco install msys2 --params="/InstallDir:%CD:~0,2%\msys64 /NoUpdate"
-    displayName: 'Install msys2'
-  - script: |
-      set PATH=%CD:~0,2%\msys64\usr\bin;%PATH%
-      %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -S bison flex
-    displayName: 'Install bison and flex'
-  - script: |
-      set PATH=%CD:~0,2%\msys64\usr\bin;%PATH%
-      echo ARCH=%ARCH%
-      echo BUILD_SET=%BUILD_SET%
-      buildall.bat -p %ARCH% -only %BUILD_SET% -t .\klayout-bits-installed
-    displayName: 'Build klayout-$(build.set)bits-$(arch)'
+  - template: azure/buildtemplate.yml
+
+- job: aggregate_micro
+  displayName: 'Aggregate KLayout microbits'
+  dependsOn: build_micro
+  pool:
+    vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
+  steps:
+  - checkout: none
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      targetPath: $(System.DefaultWorkingDirectory)
   - bash: |
       find .
-  - task: PublishPipelineArtifact@0
-    inputs:
-      artifactName: 'klayout-$(build.set)bits-$(arch)'
-      targetPath: 'klayout-bits-installed'
-- job: Aggregate
-  displayName: 'Aggregate KLayout bits together'
-  dependsOn: Build
+
+- job: aggregate_all
+  displayName: 'Aggregate KLayout bits'
+  dependsOn: build_all
   pool:
     vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
   steps:
