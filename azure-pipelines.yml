@@ -5,7 +5,7 @@ jobs:
 - job: build_all
   pool:
     vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
-  timeoutInMinutes: 120
+  timeoutInMinutes: 40
   strategy:
     matrix:
       x86-bits:
@@ -17,6 +17,10 @@ jobs:
     maxParallel: 2
   steps:
   - template: azure/buildtemplate.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-$(build.set)bits-$(arch)'
+      targetPath: 'klayout-bits-installed'
 
 - job: build_micro
   pool:
