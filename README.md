@@ -32,8 +32,8 @@ Note: cmake must be taken from the Windows installation!
 
 To build all:
 
-  buildall.bat -t <installation dir>
+  `buildall.bat -t <installation dir>`
 
 To build 32 bit only:
 
-  buildall.bat -32 ...
+  `buildall.bat -p 32 ...`

@@ -7,8 +7,15 @@ set KLAYOUT_BITS_INST_PATH=%inst_path%
 set dest_dir=%3
 set arch=%1
 set kit=%2
+set only=%4
 
-for /d %%b in (%inst_path%bit_*) do (
+if "%only%" == "micro" (
+  set bit_list=%inst_path%bit_curl %inst_path%bit_expat %inst_path%bit_ptw %inst_path%bit_zlib
+) else (
+  set bit_list=%inst_path%bit_*
+)
+
+for /d %%b in (%bit_list%) do (
 
   echo -----------------------------------------------
 
