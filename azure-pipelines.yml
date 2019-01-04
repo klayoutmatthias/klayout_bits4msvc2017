@@ -6,8 +6,15 @@ jobs:
 
   steps:
   - script: |
-      pacman -S bison
-    displayName: 'Installing dependencies'
+      choco install msys2 --params="/InstallDir:%CD:~0,2%\msys64 /NoUpdate"
+    displayName: 'Installing msys2'
   - script: |
+      set PATH=%CD:~0,2%\msys64\usr\bin;%PATH%
+      echo %PATH%
+      %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -S bison
+      dir %CD:~0,2%\msys64\usr\bin
+    displayName: 'Installing bison'
+  - script: |
+      set PATH=%CD:~0,2%\msys64\usr\bin;%PATH%
       buildall.bat
     displayName: 'Build all bits'
