@@ -46,3 +46,6 @@ To build "microbit" only (curl, expat, ptw, and zlib, but not python nor ruby):
 
 microbits:
 [ ![Download](https://api.bintray.com/packages/lightwave-lab/klayout/klayout-microbits/images/download.svg) ](https://bintray.com/lightwave-lab/klayout/klayout-microbits/_latestVersion)
+
+bits:
+[ ![Download](https://api.bintray.com/packages/lightwave-lab/klayout/klayout-bits/images/download.svg) ](https://bintray.com/lightwave-lab/klayout/klayout-bits/_latestVersion)
