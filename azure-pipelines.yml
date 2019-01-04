@@ -39,7 +39,7 @@ jobs:
       targetPath: 'klayout-bits-installed'
 
 - job: aggregate_micro
-  displayName: 'prepare klayout-microbits.zip'
+  displayName: 'prepare klayout-microbits-$(version).zip'
   dependsOn: build_micro
   pool:
     vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
@@ -59,7 +59,7 @@ jobs:
       includeRootFolder: true
       archiveType: 'zip' # Options: zip, 7z, tar, wim
       #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
-      archiveFile: 'klayout-microbits.zip' 
+      archiveFile: 'klayout-microbits-$(version).zip' 
       #replaceExistingArchive: true 
   - task: PublishPipelineArtifact@0
     inputs:
@@ -67,7 +67,7 @@ jobs:
       targetPath: $(System.DefaultWorkingDirectory)
 
 - job: aggregate_all
-  displayName: 'prepare klayout-bits.zip'
+  displayName: 'prepare klayout-bits-$(version).zip'
   dependsOn: build_all
   pool:
     vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
@@ -87,7 +87,7 @@ jobs:
       includeRootFolder: true
       archiveType: 'zip' # Options: zip, 7z, tar, wim
       #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
-      archiveFile: 'klayout-bits.zip' 
+      archiveFile: 'klayout-bits-$(version).zip' 
       #replaceExistingArchive: true 
   - task: PublishPipelineArtifact@0
     inputs:
