@@ -33,7 +33,21 @@ jobs:
       echo BUILD_SET=%BUILD_SET%
       buildall.bat -p %ARCH% -only %BUILD_SET% -t .\klayout-bits-installed
     displayName: 'Build klayout-$(build.set)bits-$(arch)'
+  - bash: |
+      find .
   - task: PublishPipelineArtifact@0
     inputs:
       artifactName: 'klayout-$(build.set)bits-$(arch)'
       targetPath: 'klayout-bits-installed'
+- job: Aggregate
+  displayName: 'Aggregate KLayout bits together'
+  dependsOn: Build
+  pool:
+    vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
+  steps:
+  - checkout: none
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      targetPath: $(System.DefaultWorkingDirectory)
+  - bash: |
+      find .
