@@ -24,6 +24,7 @@ if defined option (
   echo   -t {target-dir}    Specify the target directory where to install the bits
   echo   -p 32              Builds 32bit. Default: all
   echo   -p 64              Builds 64bit. Default: all
+  echo   -only micro        Builds only the microbits
   echo.
   goto :eof
 )
@@ -41,6 +42,10 @@ if defined option-p (
   )
   if "%option-p%" == "64" (
     set option-64=1
+  )
+  if "%option-p%" neq "32" if "%option-p%" neq "64" (
+    echo ERROR: Unknown option -p: %option-p%
+    goto :eof
   )
 ) else (
   set option-32=1

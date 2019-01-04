@@ -3,18 +3,23 @@ jobs:
 - job: Build
   pool:
     vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
-
+  strategy:
+    matrix:
+      x86:
+        arch: 'x86'
+      x64:
+        arch: 'x64'
+    maxParallel: 2
   steps:
   - script: |
       choco install msys2 --params="/InstallDir:%CD:~0,2%\msys64 /NoUpdate"
-    displayName: 'Installing msys2'
+    displayName: 'Install msys2'
   - script: |
       set PATH=%CD:~0,2%\msys64\usr\bin;%PATH%
-      echo %PATH%
-      %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -S bison
-      dir %CD:~0,2%\msys64\usr\bin
-    displayName: 'Installing bison'
+      %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -S bison flex
+    displayName: 'Install bison and flex'
   - script: |
       set PATH=%CD:~0,2%\msys64\usr\bin;%PATH%
-      buildall.bat
-    displayName: 'Build all bits'
+      echo ARCH=%ARCH%
+      buildall.bat -p %ARCH%
+    displayName: 'Build $(arch) bits'
