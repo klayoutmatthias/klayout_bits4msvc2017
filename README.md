@@ -32,8 +32,20 @@ Note: cmake must be taken from the Windows installation!
 
 To build all:
 
-  buildall.bat -t <installation dir>
+  `buildall.bat -t <installation dir>`
 
 To build 32 bit only:
 
-  buildall.bat -32 ...
+  `buildall.bat -p 32 ...`
+
+To build "microbit" only (curl, expat, ptw, and zlib, but not python nor ruby):
+
+  `buildall.bat -only micro`
+
+# Latest release downloads:
+
+microbits:
+[ ![Download](https://api.bintray.com/packages/lightwave-lab/klayout/klayout-microbits/images/download.svg) ](https://bintray.com/lightwave-lab/klayout/klayout-microbits/_latestVersion)
+
+bits:
+[ ![Download](https://api.bintray.com/packages/lightwave-lab/klayout/klayout-bits/images/download.svg) ](https://bintray.com/lightwave-lab/klayout/klayout-bits/_latestVersion)

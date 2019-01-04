@@ -1,0 +1,99 @@
+# https://aka.ms/yaml
+variables:
+  version: '1.0'
+jobs:
+- job: build_all
+  pool:
+    vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
+  timeoutInMinutes: 40
+  strategy:
+    matrix:
+      x86-bits:
+        arch: '32'
+        build.set: 'all'
+      x64-bits:
+        arch: '64'
+        build.set: 'all'
+    maxParallel: 2
+  steps:
+  - template: azure/buildtemplate.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-$(build.set)bits-$(arch)'
+      targetPath: 'klayout-bits-installed'
+
+- job: build_micro
+  pool:
+    vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
+  timeoutInMinutes: 10
+  strategy:
+    matrix:
+      x86-microbits:
+        arch: '32'
+        build.set: 'micro'
+      x64-microbits:
+        arch: '64'
+        build.set: 'micro'
+    maxParallel: 2
+  steps:
+  - template: azure/buildtemplate.yml
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-$(build.set)bits-$(arch)'
+      targetPath: 'klayout-bits-installed'
+
+- job: aggregate_micro
+  displayName: 'prepare klayout-microbits-$(version).zip'
+  dependsOn: build_micro
+  pool:
+    vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
+  steps:
+  - checkout: none
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-microbits-32'
+      targetPath: $(System.DefaultWorkingDirectory)/klayout-microbits-$(version)
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-microbits-64'
+      targetPath: $(System.DefaultWorkingDirectory)/klayout-microbits-$(version)
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/klayout-microbits-$(version)' 
+      includeRootFolder: true
+      archiveType: 'zip' # Options: zip, 7z, tar, wim
+      #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+      archiveFile: 'klayout-microbits-$(version).zip' 
+      #replaceExistingArchive: true 
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-microbits'
+      targetPath: $(System.DefaultWorkingDirectory)
+
+- job: aggregate_all
+  displayName: 'prepare klayout-bits-$(version).zip'
+  dependsOn: build_all
+  pool:
+    vmImage: 'vs2017-win2016' # other options: 'macOS-10.13', 'ubuntu-16.04'
+  steps:
+  - checkout: none
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-allbits-32'
+      targetPath: $(System.DefaultWorkingDirectory)/klayout-bits-$(version)
+  - task: DownloadPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-allbits-64'
+      targetPath: $(System.DefaultWorkingDirectory)/klayout-bits-$(version)
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/klayout-bits-$(version)' 
+      includeRootFolder: true
+      archiveType: 'zip' # Options: zip, 7z, tar, wim
+      #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+      archiveFile: 'klayout-bits-$(version).zip' 
+      #replaceExistingArchive: true 
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'klayout-bits'
+      targetPath: $(System.DefaultWorkingDirectory)

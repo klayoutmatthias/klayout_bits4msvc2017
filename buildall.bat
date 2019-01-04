@@ -24,6 +24,9 @@ if defined option (
   echo   -t {target-dir}    Specify the target directory where to install the bits
   echo   -p 32              Builds 32bit. Default: all
   echo   -p 64              Builds 64bit. Default: all
+  echo   -only micro/all    Builds only the microbits ^(all but python and
+  echo                         ruby^) or all bits. Default: all
+  echo                        
   echo.
   goto :eof
 )
@@ -35,6 +38,12 @@ if defined option-t (
 echo Using for target directory: %dest_dir%
 echo.
 
+if defined option-only (
+  set micro_all=%option-only%
+) else (
+  set micro_all="all"
+)
+
 if defined option-p (
   if "%option-p%" == "32" (
     set option-32=1
@@ -42,10 +51,15 @@ if defined option-p (
   if "%option-p%" == "64" (
     set option-64=1
   )
+  if "%option-p%" neq "32" if "%option-p%" neq "64" (
+    echo ERROR: Unknown option -p: %option-p%
+    goto :eof
+  )
 ) else (
   set option-32=1
   set option-64=1
 )
+
 
 rem ----------------------------------------------------------
 rem runs all builds
@@ -113,9 +127,10 @@ mkdir %TEMP%\klayout-bits
 
 set inst_path=%~dp0
 
+echo Calling build.bat
 if defined option-32 (
-  call %inst_path%build.bat x86 msvc2017 %dest_dir%
+  call %inst_path%build.bat x86 msvc2017 %dest_dir% %micro_all%
 )
 if defined option-64 (
-  call %inst_path%build.bat x64 msvc2017 %dest_dir%
+  call %inst_path%build.bat x64 msvc2017 %dest_dir% %micro_all%
 )
