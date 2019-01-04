@@ -6,5 +6,8 @@ jobs:
 
   steps:
   - script: |
+      pacman -S bison
+    displayName: 'Installing dependencies'
+  - script: |
       buildall.bat
     displayName: 'Build all bits'
