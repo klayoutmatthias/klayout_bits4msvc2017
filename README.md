@@ -37,3 +37,12 @@ To build all:
 To build 32 bit only:
 
   `buildall.bat -p 32 ...`
+
+To build "microbit" only (curl, expat, ptw, and zlib, but not python nor ruby):
+
+  `buildall.bat -only micro`
+
+# Latest release downloads:
+
+microbits:
+[ ![Download](https://api.bintray.com/packages/lightwave-lab/klayout/klayout-microbits/images/download.svg) ](https://bintray.com/lightwave-lab/klayout/klayout-microbits/_latestVersion)
