@@ -4,7 +4,7 @@ setlocal
 set instdir=%1
 
 set git_url=https://github.com/python/cpython.git
-set tag=v3.6.6
+set tag=v3.9.2
 
 echo "Checking out sources ..."
 

@@ -130,10 +130,12 @@ rd /s /q %TEMP%\klayout-bits
 mkdir %TEMP%\klayout-bits
 
 set inst_path=%~dp0
+set kit=msvc2017
 
 if defined option-32 (
-  call %inst_path%build.bat x86 msvc2017 %dest_dir%
+  call %inst_path%build.bat x86 %kit% %dest_dir%
 )
 if defined option-64 (
-  call %inst_path%build.bat x64 msvc2017 %dest_dir%
+  call %inst_path%build.bat x64 %kit% %dest_dir%
 )
+

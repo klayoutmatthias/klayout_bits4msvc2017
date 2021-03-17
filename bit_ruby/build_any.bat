@@ -4,7 +4,7 @@ setlocal
 set instdir=%1
 
 set git_url=https://github.com/ruby/ruby.git
-set tag=v2_5_1
+set tag=v2_7_2
 
 echo "Checking out sources ..."
 
