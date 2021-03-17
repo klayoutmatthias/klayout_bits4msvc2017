@@ -82,6 +82,24 @@ if ERRORLEVEL 1 (
 )
 
 rem ----------------------------------------------------------
+rem check for nasm in PATH
+
+where nasm >nul 2>nul
+if ERRORLEVEL 1 (
+  echo ERROR: Unable to find nasm.exe in PATH
+  goto :eof
+)
+
+rem ----------------------------------------------------------
+rem check for perl in PATH
+
+where perl >nul 2>nul
+if ERRORLEVEL 1 (
+  echo ERROR: Unable to find perl.exe in PATH
+  goto :eof
+)
+
+rem ----------------------------------------------------------
 rem check for ruby in inst_path
 rem ruby build also needs bison, sed in PATH
 
