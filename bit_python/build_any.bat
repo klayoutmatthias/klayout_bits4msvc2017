@@ -25,7 +25,7 @@ xcopy %PYTHON_BUILD_SUBDIR%\*.pdb %instdir%\bin
 xcopy %PYTHON_BUILD_SUBDIR%\*.pyd %instdir%\bin
 xcopy %PYTHON_BUILD_SUBDIR%\*.exe %instdir%\bin
 xcopy %PYTHON_BUILD_SUBDIR%\*.dll %instdir%\bin
-xcopy ..\Include\* %instdir%\include
+xcopy /s ..\Include\* %instdir%\include
 xcopy ..\PC\pyconfig.h %instdir%\include
 xcopy /e ..\lib\* %instdir%\lib
 
