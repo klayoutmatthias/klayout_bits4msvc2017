@@ -1,7 +1,7 @@
 
 setlocal EnableDelayedExpansion
 
-call "%MSVC2017_COMPILER_INST%\vcvars32"
+call "%MSVC2017_COMPILER_INST%\vcvars32" -vcvars_ver=14.1
 set CURL_BUILD_PLATFORM=x86
 %~dp0build_any.bat %1
 

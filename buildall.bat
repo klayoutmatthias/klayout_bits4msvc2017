@@ -67,6 +67,17 @@ if NOT ERRORLEVEL 1 (
   )
 )
 
+rem alternative way (VS2019)
+if "%MSVC2017_COMPILER_INST%" == "notfound" (
+  set vs_path=notfound
+  for /f "delims=" %%i in ('"c:\program files (x86)\microsoft visual studio\installer\vswhere" -latest -prerelease -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath -products *') do (
+    set "vs_path=%%i"
+  )
+  if not "vs_path" == "notfound" (
+    set "MSVC2017_COMPILER_INST=!vs_path!\vc\Auxiliary\Build"
+  )
+)
+
 if "%MSVC2017_COMPILER_INST%" == "notfound" (
   echo ERROR: Unable to find MSVC 2017 installation
   goto :eof
