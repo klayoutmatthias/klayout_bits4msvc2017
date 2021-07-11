@@ -18,9 +18,9 @@ nmake /f Makefile clean VCE
 mkdir %instdir%\libraries
 mkdir %instdir%\bin
 mkdir %instdir%\include
-xcopy pthread*.lib %instdir%\libraries
-xcopy pthread*.dll %instdir%\bin
-xcopy pthread*.pdb %instdir%\bin
-xcopy *.h %instdir%\include
+xcopy /y pthread*.lib %instdir%\libraries
+xcopy /y pthread*.dll %instdir%\bin
+xcopy /y pthread*.pdb %instdir%\bin
+xcopy /y *.h %instdir%\include
 
 endlocal

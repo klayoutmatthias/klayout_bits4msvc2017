@@ -21,8 +21,8 @@ mkdir %instdir%\libraries
 mkdir %instdir%\bin
 mkdir %instdir%\include
 
-xcopy Release\*.lib %instdir%\libraries
-xcopy Release\*.dll %instdir%\bin
-xcopy lib\expat*.h %instdir%\include
+xcopy /y Release\*.lib %instdir%\libraries
+xcopy /y Release\*.dll %instdir%\bin
+xcopy /y lib\expat*.h %instdir%\include
 
 endlocal

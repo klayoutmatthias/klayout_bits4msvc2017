@@ -17,11 +17,11 @@ nmake /f win32\Makefile.msc
 mkdir %instdir%\lib
 mkdir %instdir%\bin
 mkdir %instdir%\include
-xcopy zlib*.lib %instdir%\lib
-xcopy zdll*.lib %instdir%\lib
-xcopy zlib*.pdb %instdir%\bin
-xcopy zlib*.dll %instdir%\bin
-xcopy zlib.h %instdir%\include
-xcopy zconf.h %instdir%\include
+xcopy /y zlib*.lib %instdir%\lib
+xcopy /y zdll*.lib %instdir%\lib
+xcopy /y zlib*.pdb %instdir%\bin
+xcopy /y zlib*.dll %instdir%\bin
+xcopy /y zlib.h %instdir%\include
+xcopy /y zconf.h %instdir%\include
 
 endlocal
