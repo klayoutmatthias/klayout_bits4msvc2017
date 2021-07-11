@@ -8,12 +8,22 @@ set dest_dir=%3
 set arch=%1
 set kit=%2
 
-for /d %%b in (%inst_path%bit_*) do (
+for /d %%b in (%inst_path%bit*_*) do (
 
   echo -----------------------------------------------
 
   set bit_dir_name=%%~nb
   set bit_name=!bit_dir_name:bit_=!
+  set bit_name=!bit_name:bit0_=!
+  set bit_name=!bit_name:bit1_=!
+  set bit_name=!bit_name:bit2_=!
+  set bit_name=!bit_name:bit3_=!
+  set bit_name=!bit_name:bit4_=!
+  set bit_name=!bit_name:bit5_=!
+  set bit_name=!bit_name:bit6_=!
+  set bit_name=!bit_name:bit7_=!
+  set bit_name=!bit_name:bit8_=!
+  set bit_name=!bit_name:bit9_=!
 
   if exist %%b\.disabled (
 
