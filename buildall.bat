@@ -35,6 +35,8 @@ if defined option-t (
 echo Using for target directory: %dest_dir%
 echo.
 
+set option-32=
+set option-64=
 if defined option-p (
   if "%option-p%" == "32" (
     set option-32=1
@@ -48,8 +50,6 @@ if defined option-p (
 )
 
 rem ----------------------------------------------------------
-rem runs all builds
-
 rem locate MSVC 2017 on the system
 
 set MSVC2017_COMPILER_INST=notfound
@@ -82,6 +82,8 @@ if "%MSVC2017_COMPILER_INST%" == "notfound" (
   echo ERROR: Unable to find MSVC 2017 installation
   goto :eof
 )
+
+rem TODO: does not check for 14.1 availability
 
 rem ----------------------------------------------------------
 rem check for cmake in PATH
