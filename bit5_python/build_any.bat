@@ -6,6 +6,9 @@ set instdir=%1
 set git_url=https://github.com/python/cpython.git
 set tag=v3.9.2
 
+rem MSVC 2017:
+set vctools_ver=v141
+
 echo "Checking out sources ..."
 
 git clone %git_url% sources
@@ -13,7 +16,7 @@ cd sources
 git checkout --detach tags/%tag%
 
 cd PCBuild
-call build.bat -c Release -p %PYTHON_BUILD_PLATFORM% -e -t Rebuild
+call build.bat -c Release -p %PYTHON_BUILD_PLATFORM% -e -t Rebuild "/p:PlatformToolset=%vctools_ver%"
 
 mkdir %instdir%\libs
 mkdir %instdir%\lib
@@ -30,7 +33,7 @@ xcopy ..\PC\pyconfig.h %instdir%\include
 xcopy /e ..\lib\* %instdir%\lib
 
 rd /s /q %PYTHON_BUILD_SUBDIR%
-call build.bat -c Debug -p %PYTHON_BUILD_PLATFORM% -e -t Rebuild
+call build.bat -c Debug -p %PYTHON_BUILD_PLATFORM% -e -t Rebuild "/p:PlatformToolset=%vctools_ver%"
 
 xcopy %PYTHON_BUILD_SUBDIR%\python*.lib %instdir%\libs
 xcopy %PYTHON_BUILD_SUBDIR%\*.pdb %instdir%\bin
