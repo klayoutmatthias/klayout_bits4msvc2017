@@ -13,7 +13,8 @@ cd sources
 git checkout --detach tags/%tag%
 
 cd expat
-cmake -DCMAKE_GENERATOR_PLATFORM=%EXPAT_BUILD_PLATFORM% .
+rem v141 is for MSVC 2017 (v142 for MSVC 2019)
+cmake -DCMAKE_GENERATOR_PLATFORM=%EXPAT_BUILD_PLATFORM% -T v141 .
 msbuild expat.sln /p:Configuration=Release /p:Platform=%EXPAT_BUILD_PLATFORM%
 
 mkdir %instdir%\libraries
