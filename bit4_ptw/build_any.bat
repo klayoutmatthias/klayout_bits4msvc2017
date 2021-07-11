@@ -12,7 +12,7 @@ git clone %git_url% sources
 cd sources
 git checkout --detach tags/%tag%
 
-git apply %KLAYOUT_BITS_INST_PATH%\bit_ptw\patch
+git apply %~dp0\patch
 nmake /f Makefile clean VCE
 
 mkdir %instdir%\libraries
