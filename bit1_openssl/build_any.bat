@@ -4,7 +4,7 @@ setlocal
 set instdir=%1
 
 set git_url=https://github.com/openssl/openssl.git
-set tag=OpenSSL_1_0_2u
+set tag=OpenSSL_1_1_1k
 
 echo "Checking out sources ..."
 
