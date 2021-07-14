@@ -13,8 +13,7 @@ cd sources
 git checkout --detach tags/%tag%
 
 perl Configure %OPENSSL_BUILD_PLATFORM% --prefix=%instdir% enable-static-engine
-call ms\%OPENSSL_DO_BAT%
-nmake -f ms\ntdll.mak
-nmake -f ms\ntdll.mak install
+nmake -f makefile 
+nmake -f makefile install
 
 endlocal
