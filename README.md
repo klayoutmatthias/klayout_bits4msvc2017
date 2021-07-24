@@ -49,8 +49,8 @@ Set TEMP environment variable to a suitable build directory.
 
 To build all:
 
-  buildall.bat -t <installation dir>
+  ```buildall.bat -t <installation dir>```
 
 To build 32 bit only:
 
-  buildall.bat -32 ...
+  ```buildall.bat -32 ...```
