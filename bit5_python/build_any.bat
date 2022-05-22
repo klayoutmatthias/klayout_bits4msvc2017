@@ -4,7 +4,7 @@ setlocal
 set instdir=%1
 
 set git_url=https://github.com/python/cpython.git
-set tag=v3.9.2
+set tag=v3.9.13
 
 rem MSVC 2017:
 set vctools_ver=v141
@@ -16,30 +16,39 @@ cd sources
 git checkout --detach tags/%tag%
 
 cd PCBuild
-call build.bat -c Debug -p %PYTHON_BUILD_PLATFORM% -e -t Rebuild "/p:PlatformToolset=%vctools_ver%"
+
+rem skip debug part
+goto release
+
+:debug
+rem build debug version
+call build.bat -e -c Debug -p %PYTHON_BUILD_PLATFORM% "/p:PlatformToolset=%vctools_ver%"
 
 mkdir %instdir%\libs
 mkdir %instdir%\lib
 mkdir %instdir%\bin
 mkdir %instdir%\include
 
-xcopy /y %PYTHON_BUILD_SUBDIR%\python*.lib %instdir%\libs
-xcopy /y %PYTHON_BUILD_SUBDIR%\*.pdb %instdir%\bin
-xcopy /y %PYTHON_BUILD_SUBDIR%\*.pyd %instdir%\bin
-xcopy /y %PYTHON_BUILD_SUBDIR%\*.exe %instdir%\bin
-xcopy /y %PYTHON_BUILD_SUBDIR%\*.dll %instdir%\bin
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\python*.lib %instdir%\libs
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\*.pdb %instdir%\bin
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\*.pyd %instdir%\bin
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\*.exe %instdir%\bin
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\*.dll %instdir%\bin
 
 rd /s /q %PYTHON_BUILD_SUBDIR%
-call build.bat -c Release -p %PYTHON_BUILD_PLATFORM% -e -t Rebuild "/p:PlatformToolset=%vctools_ver%"
 
-xcopy /y %PYTHON_BUILD_SUBDIR%\python*.lib %instdir%\libs
-xcopy /y %PYTHON_BUILD_SUBDIR%\*.pdb %instdir%\bin
-xcopy /y %PYTHON_BUILD_SUBDIR%\*.pyd %instdir%\bin
-xcopy /y %PYTHON_BUILD_SUBDIR%\*.exe %instdir%\bin
-xcopy /y %PYTHON_BUILD_SUBDIR%\*.dll %instdir%\bin
+:release
+rem build release version
+call build.bat -e -c Release -p %PYTHON_BUILD_PLATFORM% "/p:PlatformToolset=%vctools_ver%"
 
-xcopy /y /s ..\Include\* %instdir%\include
-xcopy /y ..\PC\pyconfig.h %instdir%\include
-xcopy /y /e ..\lib\* %instdir%\lib
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\python*.lib %instdir%\libs
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\*.pdb %instdir%\bin
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\*.pyd %instdir%\bin
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\*.exe %instdir%\bin
+xcopy /i /y %PYTHON_BUILD_SUBDIR%\*.dll %instdir%\bin
+
+xcopy /i /y /s ..\Include\* %instdir%\include
+xcopy /i /y ..\PC\pyconfig.h %instdir%\include
+xcopy /i /y /e ..\lib\* %instdir%\lib
 
 endlocal
