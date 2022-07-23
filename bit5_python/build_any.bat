@@ -17,9 +17,6 @@ git checkout --detach tags/%tag%
 
 cd PCBuild
 
-rem skip debug part
-goto release
-
 :debug
 rem build debug version
 call build.bat -e -c Debug -p %PYTHON_BUILD_PLATFORM% "/p:PlatformToolset=%vctools_ver%"
